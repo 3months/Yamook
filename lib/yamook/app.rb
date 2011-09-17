@@ -47,8 +47,8 @@ module Yamook
     def oauth_client
       OAuth2::Client.new(ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'],
         :site => "https://github.com",
-        :authorize_path => "/login/oauth/authorize",
-        :access_token_path => "/login/oauth/access_token"
+        :authorize_url => "/login/oauth/authorize",
+        :token_url => "/login/oauth/access_token"
       )
     end
 
