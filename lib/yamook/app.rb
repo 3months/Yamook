@@ -1,12 +1,12 @@
 module Yamook
   class App < Sinatra::Base
 
-    config :development do
+    configure do
       DataMapper.setup(:default, "postgres://localhost/yammook_dev")
-    end    
+    end
 
-    config do
-      DataMapper.setup(:default, ENV['DATABASE_URL'])  
+    configure :production do
+      DataMapper.setup(:default, ENV['DATABASE_URL'])
     end
 
     # Configure settings
@@ -15,12 +15,12 @@ module Yamook
         haml :settings
       else
         haml :login
-      end      
+      end
     end
-    
+
     # Receive github's post-receive hook
     post '/' do
-      
+
     end
 
     ##### AUTHENTICATION #####
@@ -43,7 +43,7 @@ module Yamook
     private
 
     def oauth_client
-      OAuth2::Client.new(ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'], 
+      OAuth2::Client.new(ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'],
         :site => "https://github.com",
         :authorize_path => "/login/oauth/authorize",
         :access_token_path => "/login/oauth/access_token"
@@ -55,3 +55,4 @@ module Yamook
     end
   end
 end
+
