@@ -53,7 +53,7 @@ module Yamook
     end
 
     def redirect_uri(path = "/auth/github/callback", query = nil)
-      uri = URI.parse(request.uri); uri.path = path; uri.query = query; uri.to_s
+      uri = URI.parse(request.url); uri.path = path; uri.query = query; uri.to_s
     end
   end
 end
