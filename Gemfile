@@ -6,4 +6,5 @@ gem 'oauth2'
 gem 'json'
 gem 'datamapper'
 gem 'dm-postgres-adapter'
+gem 'haml'
 
