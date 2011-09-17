@@ -3,11 +3,13 @@ module Yamook
 
     configure do
       DataMapper.setup(:default, "postgres://localhost/yammook_dev")
+      set :root, File.dirname(__FILE__)
     end
 
     configure :production do
       DataMapper.setup(:default, ENV['DATABASE_URL'])
     end
+
 
     # Configure settings
     get '/' do
