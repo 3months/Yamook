@@ -27,15 +27,15 @@ module Yamook
 
     ##### AUTHENTICATION #####
     get '/auth/github' do
-      redirect oauth_client.web_server.authorize_url({
+      redirect oauth_client.authorize_url({
         :redirect_uri => redirect_uri,
       })
     end
 
     get '/auth/github/callback' do
       begin
-        access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => redirect_uri)
-        session[:github_access_token] = access_token
+        access_token = oauth_client.get_token(params[:code], :redirect_uri => redirect_uri)
+        session[:github_access_token] = access_token.to_s
         redirect '/'
       rescue OAuth2::HTTPError
         %(<p><a href="/auth/github">Oops, something went wrong. Please try again.</a></p>)
