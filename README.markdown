@@ -39,6 +39,5 @@ Setting this up is easy - just go to `/auth/yammer` to set yourself up as the br
 
 ---
 
-## License ##
 Created in 2011 by @sudojosh
 MIT License
