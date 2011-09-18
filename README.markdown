@@ -5,7 +5,7 @@ Yamook is a post-recieve hook designed for Github. It's not designed to be SaaS-
 
 ## How it works ##
 
-Yamooks got three routes - one to recieve the JSON from Github upon a push, and two to handle authentication with Yammer as a particular user. Yamook uses [Liquid](https://github.com/Shopify/liquid) to generate a message (See 'Usage' below), and then posts that generated message on Yammer as the authenticated user.
+Yamook's got three routes - one to recieve the JSON from Github upon a push, and two to handle authentication with Yammer as a particular user. Yamook uses [Liquid](https://github.com/Shopify/liquid) to generate a message (See 'Usage' below), and then posts that generated message on Yammer as the authenticated user.
 
 ## Usage ##
 
@@ -28,6 +28,19 @@ These values can get interpolated into the template message, which is retrieved 
 In order to post to Yammer, a valid access token with write access is required. To facilitate this, two routes are provided that allow you to login to Yammer as the user account you wish to post as. Once you have done this, the access token will be securely stored in Memcache (on Heroku or your server), and used by the application as needed. It's important that you set the user ID of the Yammer user you are logging in as in the environment as well - this is to prevent any Yammer user from taking over as the broadcaster.
 
 Setting this up is easy - just go to `/auth/yammer` to set yourself up as the broadcaster.
+
+### Configuration ###
+
+All of the relevant configuration settings are stored in the ENV hash. On Heroku, setting this value is as easy as executing `heroku config:add [config key]=[config value]` within the project directory. On another server, you can add this to your server using `export [config key]=[config value]` - if you want these values to persist, you can pop them in the `.bashrc`, `.bash_profile`, or `.zshrc`, depending on which shell you use and your personal preference. 
+
+Available settings:
+
+* `message_matcher`: The string to match commit messages on - non-matching messages won't be broadcast
+* `message_template`: The message to broadcast - this is interpolated with the values necessary, see the Templating section above for available replacements.
+* `permitted_broadcasters`: A CSV string of Yammer ID's who are allowed to set themselves as the broadcaster
+* `permitted_owner`: The owner of the repositories to be broadcast. This is a security measure to prevent anyone from pointing the webhook to your application and posting their commit messages. 
+* `yammer_consumer_key`: The consumer key of your Yammer application
+* `yammer_consumer_secret`: The consumer secret of your Yammer application
 
 
 ---
