@@ -1,6 +1,10 @@
 class Yamook < Sinatra::Base
   set :cache, Dalli::Client.new
 
+  get '/' do
+    redirect 'https://github.com/3months/yamook'
+  end
+
   post '/' do
     @message = message_from_payload(params[:payload])
     broadcast_on(:yammer, @message)
