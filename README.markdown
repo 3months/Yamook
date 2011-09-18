@@ -27,6 +27,8 @@ These values can get interpolated into the template message, which is retrieved 
 
 In order to post to Yammer, a valid access token with write access is required. To facilitate this, two routes are provided that allow you to login to Yammer as the user account you wish to post as. Once you have done this, the access token will be securely stored in Memcache (on Heroku or your server), and used by the application as needed. It's important that you set the user ID of the Yammer user you are logging in as in the environment as well - this is to prevent any Yammer user from taking over as the broadcaster.
 
+Setting this up is easy - just go to `/auth/yammer` to set yourself up as the broadcaster.
+
 
 ---
 
