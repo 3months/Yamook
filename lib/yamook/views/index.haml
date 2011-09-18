@@ -1,0 +1,16 @@
+.row
+  - if session[:github_data]
+    .span16
+      %h2 Repositories
+      %ul
+      - session[:github_data][:repos].each do |repo|
+        %li
+          %a{:href => repo["html"]} repo["name"]
+  - else
+    .span16
+      %a.btn.github{:href => "/auth/github", :rel => "popover", "data-content" => "You can login to Github to enable some or all of your (and/or your organization's) repositories for broadcasting.", "data-original-title" => "Why login?"}
+        %img{:src => "/images/github.png"}
+        Login to Github
+      %a.btn.yammer{:href => "/auth/yammer", :rel => "popover", "data-content" => "You can login to Yammer to set up what will be broadcast and in which format", "data-original-title" => "Why login?"}
+        %img{:src => "/images/yammer.png"}        
+        Login to Yammer
