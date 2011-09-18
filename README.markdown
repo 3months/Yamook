@@ -1,4 +1,11 @@
-# Yamook #
+`
+	____    ____  ___      .___  ___.   ______     ______    __  ___ 
+	\   \  /   / /   \     |   \/   |  /  __  \   /  __  \  |  |/  / 
+	 \   \/   / /  ^  \    |  \  /  | |  |  |  | |  |  |  | |  '  /  
+	  \_    _/ /  /_\  \   |  |\/|  | |  |  |  | |  |  |  | |    <   
+	    |  |  /  _____  \  |  |  |  | |  `--'  | |  `--'  | |  .  \  
+	    |__| /__/     \__\ |__|  |__|  \______/   \______/  |__|\__\ 
+`
 ---
 
 Yamook is a post-recieve hook designed for Github. It's not designed to be SaaS-y at all - the idea is for you to fork or download a copy, pop it on the server (it's been optimized for [Heroku](http://heroku.com)), and change config values as required to suit your needs.
