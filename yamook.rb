@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 class Yamook < Sinatra::Base
 
   set :cache, Dalli::Client.new
