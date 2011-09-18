@@ -4,7 +4,7 @@ class Yamook < Sinatra::Base
 
   set :cache, Dalli::Client.new
   set :permitted_broadcasters, (ENV['permitted_broadcasters'].split(',').map { |broadcaster| broadcaster.strip } rescue [])
-  set :message_matcher, "BROADCAST:"  
+  set :message_matcher, ENV['message_matcher']
 
   use Rack::Session::Cookie
   use OmniAuth::Strategies::Yammer, ENV['yammer_consumer_key'], ENV['yammer_consumer_secret']
@@ -62,6 +62,10 @@ class Yamook < Sinatra::Base
 
   def broadcast_on(provider = :yammer, message)
     raise "No broadcaster set up" if settings.cache.get('yammer_access_token').nil?
-    RestClient.post "https://www.yammer.com/api/v1/messages.json?access_token=#{settings.cache.get('yammer_access_token')}", :body => message
+    begin
+      RestClient.post "https://www.yammer.com/api/v1/messages.json?access_token=#{settings.cache.get('yammer_access_token')}", :body => message
+    rescue Exception => exp
+      "<h1>Failed to post message</h1><p>#{exp.message}</p>"
+    end
   end
 end
