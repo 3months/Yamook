@@ -48,7 +48,7 @@ class Yamook < Sinatra::Base
     return unless @message = should_send(@message, @owner)
     @template = Liquid::Template.parse(ENV['message_template'])
     @template.render({
-      'repository' => @repository,
+      'repository' => @payload["repository"]["name"],
       'user' => @payload["commits"].last["author"]["name"],
       'message' => @message,
       'url' => @payload["commits"].last["url"]
