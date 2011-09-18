@@ -2,7 +2,7 @@ class Yamook < Sinatra::Base
 
   set :cache, Dalli::Client.new
   set :permitted_broadcasters, (ENV['permitted_broadcasters'].split(',').map { |broadcaster| broadcaster.strip } rescue [])
-  set :permitted_repositories, (ENV['permitted_repositories'].split(',').map { |repo| repo.strip } rescue [])
+  set :permitted_owner, ENV['permitted_owner']
   set :message_matcher, ENV['message_matcher']
 
   use Rack::Session::Cookie
@@ -44,8 +44,8 @@ class Yamook < Sinatra::Base
   def message_from_payload(payload = [])
     @payload = JSON.parse(payload)
     @message = @payload["commits"].last["message"]
-    @repository = @payload["repository"]["name"]
-    return unless @message = should_send(@message, @repository)
+    @owner = @payload["repository"]["owner"]["name"]
+    return unless @message = should_send(@message, @owner)
     @template = Liquid::Template.parse(ENV['message_template'])
     @template.render({
       'repository' => @repository,
@@ -55,8 +55,8 @@ class Yamook < Sinatra::Base
     })
   end
 
-  def should_send(msg)
-    return nil unless settings.permitted_repositories.include?(@repository)
+  def should_send(msg, own)
+    return nil unless settings.permitted_owner == own.strip
     matcher = /\A#{settings.message_matcher}/
     return nil unless msg =~ matcher
     return msg.gsub(matcher, "").strip
