@@ -13,11 +13,7 @@ module Yamook
 
     # Configure settings
     get '/' do
-      if session[:github_access_token]
-        haml :settings
-      else
-        haml :login
-      end
+      haml :index
     end
 
     # Receive github's post-receive hook
@@ -27,15 +23,15 @@ module Yamook
 
     ##### AUTHENTICATION #####
     get '/auth/github' do
-      redirect oauth_client.authorize_url({
+      redirect oauth_client.web_server.authorize_url({
         :redirect_uri => redirect_uri,
       })
     end
 
     get '/auth/github/callback' do
       begin
-        access_token = oauth_client.get_token(params[:code], :redirect_uri => redirect_uri)
-        session[:github_access_token] = access_token.to_s
+        access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => redirect_uri)
+        session[:github_data] = load_github_data(access_token)
         redirect '/'
       rescue OAuth2::HTTPError
         %(<p><a href="/auth/github">Oops, something went wrong. Please try again.</a></p>)
@@ -43,6 +39,20 @@ module Yamook
     end
 
     private
+
+    def load_github_data(access_token)
+      begin
+        {
+          :access_token => access_token.to_s,
+          :user => access_token.get('/user'),
+          :repos => access_token.get('/user/repos')
+        }
+      rescue
+        { 
+          :access_token => access_token.to_s
+        }
+      end    
+    end
 
     def oauth_client
       OAuth2::Client.new(ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'],
