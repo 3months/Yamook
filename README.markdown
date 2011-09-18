@@ -43,6 +43,7 @@ Available settings:
 * `yammer_consumer_secret`: The consumer secret of your Yammer application
 
 
+
 ---
 
 Created in 2011 by @sudojosh
